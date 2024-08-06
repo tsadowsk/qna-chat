@@ -7,7 +7,7 @@ metadata:
   labels:
     io.kompose.service: tei-xeon-service
   name: tei-xeon-service
-  namespace: {{ .Values.global.gaudillm.namespace }}
+  namespace: {{ .Values.global.xeonllm.namespace }}
 spec:
   ports:
     - name: "8808"

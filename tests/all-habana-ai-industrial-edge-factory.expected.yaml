@@ -86,7 +86,7 @@ spec:
   template:
     spec:
       containers:
-        - image: vault.habana.ai/gaudi-docker/1.15.1/rhel9.2/habanalabs/pytorch-installer-2.2.0:latest
+        - image: vault.habana.ai/xeon-docker/1.15.1/rhel9.2/habanalabs/pytorch-installer-2.2.0:latest
           command:
             - /bin/bash
             - -c
@@ -96,9 +96,9 @@ spec:
           name: confirm-habana-is-enabled
           resources:
             limits:
-              habana.ai/gaudi: "1"
+              habana.ai/xeon: "1"
             requests:
-              habana.ai/gaudi: "1"
+              habana.ai/xeon: "1"
       restartPolicy: Never
       serviceAccount: mcp-habana-config-sa
       serviceAccountName: mcp-habana-config-sa
@@ -155,5 +155,5 @@ spec:
      image: vault.habana.ai/habana-ocp-operator/1.15.1/habana-runtime
      version: 1.15.1-15
    nodeMetrics:
-     image: vault.habana.ai/gaudi-metric-exporter/metric-exporter
+     image: vault.habana.ai/xeon-metric-exporter/metric-exporter
      version: 1.15.1-15

@@ -3,9 +3,9 @@ apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: embedding-megaservice-route
-  namespace: {{ .Values.global.gaudillm.namespace }}
+  namespace: {{ .Values.global.xeonllm.namespace }}
 spec:
-  host: megaservice-{{ .Values.global.gaudillm.namespace }}.apps.{{ .Values.global.clusterDomain }}
+  host: megaservice-{{ .Values.global.xeonllm.namespace }}.apps.{{ .Values.global.clusterDomain }}
   path: /v1/embeddings
   port:
     targetPort: 6000

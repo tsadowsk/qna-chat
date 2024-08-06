@@ -4,10 +4,10 @@ metadata:
   labels:
     io.kompose.service: tei-xeon-service-claim0
   name: tei-xeon-service-claim0
-  namespace: {{ .Values.global.gaudillm.namespace }}
+  namespace: {{ .Values.global.xeonllm.namespace }}
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.global.gaudillm.tei_xeon.pvc.size }}
+      storage: {{ .Values.global.xeonllm.tei_xeon.pvc.size }}

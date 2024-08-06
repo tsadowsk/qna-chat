@@ -17,17 +17,17 @@ job:
   awsimage: amazon/aws-cli
 
 global:
-  namespace: gaudi-pattern
+  namespace: xeon-pattern
 
 rgw:
   cpu: 2
   memory: 8Gi
   bucketName: model-bucket
 
-serviceAccountName: gaudi-pattern-sa
+serviceAccountName: xeon-pattern-sa
 rbac:
   roles:
-    - name: gaudi-pattern-role
+    - name: xeon-pattern-role
       createRole: true
       apiGroups:
         - '""'
@@ -52,16 +52,16 @@ rbac:
         - "update"
         - "use"
   roleBindings:
-    - name: gaudi-pattern-rolebind
+    - name: xeon-pattern-rolebind
       createBinding: true
       scope:
         cluster: true
         namespace: ""
       subjects:
         kind: ServiceAccount
-        name: gaudi-pattern-sa
+        name: xeon-pattern-sa
         namespace: openshift-storage
         apiGroup: ""
       roleRef:
         kind: ClusterRole
-        name: gaudi-pattern-role
+        name: xeon-pattern-role

@@ -9,7 +9,7 @@ metadata:
   labels:
     io.kompose.service: reranking
   name: reranking
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
   ports:
     - name: "8000"
@@ -26,11 +26,11 @@ metadata:
     kompose.cmd: kompose convert -f docker_compose.yaml
     kompose.version: 1.33.0 (3ce457399)
     argocd.argoproj.io/sync-wave: "5"
-    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"reranking-tei:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"reranking-tei-gaudi-server\")].image"}]'
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"reranking-tei:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"reranking-tei-xeon-server\")].image"}]'
   labels:
     io.kompose.service: reranking
   name: reranking
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
   replicas: 1
   selector:
@@ -57,9 +57,9 @@ spec:
                   key: huggingface
                   name: hf-token-secret
             - name: TEI_RERANKING_ENDPOINT
-              value: http://tei-xeon-service.gaudi-llm.svc.cluster.local:8808
+              value: http://tei-xeon-service.xeon-llm.svc.cluster.local:8808
           image: reranking-tei:latest
-          name: reranking-tei-gaudi-server
+          name: reranking-tei-xeon-server
           ports:
             - containerPort: 8000
               protocol: TCP
@@ -76,7 +76,7 @@ kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
   name: reranking
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
   output:
     to:
@@ -105,7 +105,7 @@ apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
   name: reranking-tei
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
   lookupPolicy:
     local: true
@@ -115,9 +115,9 @@ apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: rerank-megaservice-route
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
-  host: megaservice-gaudi-llm.apps.region.example.com
+  host: megaservice-xeon-llm.apps.region.example.com
   path: /v1/reranking
   port:
     targetPort: 8000

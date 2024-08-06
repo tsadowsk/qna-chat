@@ -1,0 +1,95 @@
+global:
+  pattern: xeonllm
+
+  clusterDomain: lab.com
+
+  xeonllm:
+    namespace: xeon-llm
+  
+job:
+  image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
+  
+serviceAccountName: xeon-pattern-sa
+
+secretStore:
+  name: vault-backend
+  kind: ClusterSecretStore
+
+hftokensecret:
+  key: secret/global/huggingface
+
+rbac:
+  roles:
+    - name: xeon-pattern-rhoai-role
+      createRole: true
+      apiGroups:
+        - '""'
+        - '"apps"'
+        - '"batch"'
+        - '"machineconfiguration.openshift.io"'
+        - '"rbac.authorization.k8s.io"'
+        - '"security.openshift.io"'
+        - '"datasciencecluster.opendatahub.io"'
+        - '"operator.knative.dev"'
+        - '"build.openshift.io"'
+      scope:
+        cluster: true
+      resources:
+        - namespaces
+        - secrets
+        - datascienceclusters
+        - clusterrolebindings
+        - knativeservings
+        - jobs
+        - buildconfigs
+        - builds
+        - buildconfigs/instantiate
+      verbs:
+        - "create"
+        - "get"
+        - "list"
+        - "patch"
+        - "update"
+        - "use"
+        - "watch"
+    - name: xeon-pattern-rhoai-role-mcp-label
+      createRole: true
+      apiGroups:
+        - '"machineconfiguration.openshift.io"'
+      scope:
+        cluster: true
+      resources:
+        - machineconfigpools
+        - machineconfigs
+      verbs:
+        - "get"
+        - "list"
+        - "patch"
+        - "watch"
+  roleBindings:
+    - name: xeon-pattern-rhoai-rolebind
+      createBinding: true
+      scope:
+        cluster: true
+        namespace: ""
+      subjects:
+        kind: ServiceAccount
+        name: xeon-pattern-sa
+        namespace: xeon-llm 
+        apiGroup: ""
+      roleRef:
+        kind: ClusterRole
+        name: xeon-pattern-rhoai-role  
+    - name: xeon-pattern-rhoai-role-mcp-label
+      createBinding: true
+      scope:
+        cluster: true
+        namespace: ""
+      subjects:
+        kind: ServiceAccount
+        name: xeon-pattern-sa
+        namespace: xeon-llm 
+        apiGroup: ""
+      roleRef:
+        kind: ClusterRole
+        name: xeon-pattern-rhoai-role-mcp-label

@@ -5,7 +5,7 @@
 ## Start Here
 
 If you've followed a link to this repository, but are not really sure what it contains
-or how to use it, head over to [OPEA QnA chat accelerated with Intel Gaudi pattern](https://validatedpatterns.io/patterns/gaudi-rag-chat-qna/)
+or how to use it, head over to [OPEA QnA chat accelerated with Intel Gaudi pattern](https://validatedpatterns.io/patterns/xeon-rag-chat-qna/)
 for additional context and installation instructions
 
 ## Rationale

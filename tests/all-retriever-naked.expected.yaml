@@ -9,7 +9,7 @@ metadata:
   labels:
     io.kompose.service: retriever
   name: retriever
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
   ports:
     - name: "7000"
@@ -30,7 +30,7 @@ metadata:
   labels:
     io.kompose.service: retriever
   name: retriever
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
   replicas: 1
   selector:
@@ -54,8 +54,8 @@ spec:
             - name: INDEX_NAME
               value: rag-redis
             - name: REDIS_URL
-              value: redis://redis-vector-db.gaudi-llm.svc.cluster.local:6379
-          image: image-registry.openshift-image-registry.svc:5000/gaudi-llm/retriever-redis:latest
+              value: redis://redis-vector-db.xeon-llm.svc.cluster.local:6379
+          image: image-registry.openshift-image-registry.svc:5000/xeon-llm/retriever-redis:latest
           name: retriever-redis-server
           ports:
             - containerPort: 7000
@@ -74,7 +74,7 @@ kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
   name: retriever
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
   output:
     to:
@@ -103,7 +103,7 @@ apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
   name: retriever-redis
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
   lookupPolicy:
     local: true
@@ -113,9 +113,9 @@ apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: retriever-megaservice-route
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
-  host: megaservice-gaudi-llm.apps.
+  host: megaservice-xeon-llm.apps.
   path: /v1/retrieval
   port:
     targetPort: 7000

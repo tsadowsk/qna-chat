@@ -2,8 +2,8 @@
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
-  name: tei-gaudi
-  namespace: {{ .Values.global.gaudillm.namespace }}
+  name: tei-xeon
+  namespace: {{ .Values.global.xeonllm.namespace }}
 spec:
   lookupPolicy:
     local: true

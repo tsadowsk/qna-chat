@@ -5,35 +5,12 @@ clusterGroup:
     - open-cluster-management
     - vault
     - golang-external-secrets
-    - openshift-nfd
-    - habana-ai-operator
-    - openshift-kmm:
-        operatorGroup: true
-        targetNamespaces: 
     - redhat-ods-operator:
         operatorGroup: true
         targetNamespaces: 
-    - gaudi-llm
+    - xeon-llm
 
   subscriptions:    
-    nfd:
-      name: nfd
-      namespace: openshift-nfd
-      channel: stable
-      source: redhat-operators
-
-    kmm:
-      name: kernel-module-management
-      namespace: openshift-kmm
-      channel: stable
-      source: redhat-operators
-
-    habana-ai:
-      name: habana-ai-operator
-      namespace: habana-ai-operator
-      channel: stable
-      source: certified-operators
-
     rhods:
       name: rhods-operator
       namespace: redhat-ods-operator
@@ -55,11 +32,8 @@ clusterGroup:
 
   projects:
     - hub
-    - openshift-nfd
-    - openshift-kmm
-    - habana-ai-operator
     - redhat-ods-operator
-    - gaudi-llm
+    - xeon-llm
   # Explicitly mention the cluster-state based overrides we plan to use for this pattern.
   # We can use self-referential variables because the chart calls the tpl function with these variables defined
   sharedValueFiles:
@@ -91,46 +65,25 @@ clusterGroup:
       namespace: golang-external-secrets
       project: hub
       path: common/golang-external-secrets
-    nfd:
-      name: nfd
-      namespace: openshift-nfd
-      project: openshift-nfd
-      path: charts/all/nfd
-      ignoreDifferences:
-      - group: nfd.openshift.io
-        kind: NodeFeatureDiscovery
-        jqPathExpressions:
-        - '.spec.customConfig'
-        - '.spec.topologyupdater'
-    kmm:
-      name: kmm
-      namespace: openshift-kmm
-      project: openshift-kmm
-      path: charts/all/kmm
     openshift-data-foundations:
       name: odf
       namespace: openshift-storage
       project: hub
       path: charts/all/openshift-data-foundations
-    habana-ai:
-      name: habana-ai
-      namespace: habana-ai-operator
-      project: habana-ai-operator
-      path: charts/all/habana-ai
     rhods-operator:
       name: rhods-operator
       namespace: redhat-ods-operator
       project: redhat-ods-operator
       path: charts/all/rhods-operator
-    rhods-gaudi-addons:
-      name: rhods-gaudi-addons
+    rhods-xeon-addons:
+      name: rhods-xeon-addons
       namespace: redhat-ods-operator
       project: redhat-ods-operator
-      path: charts/all/rhods-operator-gaudi-addons
+      path: charts/all/rhods-operator-xeon-addons
     tei-xeon-service:
       name: tei-xeon-service
-      namespace: gaudi-llm
-      project: gaudi-llm
+      namespace: xeon-llm
+      project: xeon-llm
       path: charts/all/tei-xeon-service
       ignoreDifferences:
       - group: apps
@@ -143,8 +96,8 @@ clusterGroup:
         - '.spec.paused'
     tei-embedding-service:
       name: tei-embedding-service
-      namespace: gaudi-llm
-      project: gaudi-llm
+      namespace: xeon-llm
+      project: xeon-llm
       path: charts/all/tei-embedding-service
       ignoreDifferences:
       - group: apps
@@ -157,8 +110,8 @@ clusterGroup:
         - '.spec.paused'
     retriever:
       name: retriever
-      namespace: gaudi-llm
-      project: gaudi-llm
+      namespace: xeon-llm
+      project: xeon-llm
       path: charts/all/retriever
       ignoreDifferences:
       - group: apps
@@ -171,8 +124,8 @@ clusterGroup:
         - '.spec.paused'
     reranking:
       name: reranking
-      namespace: gaudi-llm
-      project: gaudi-llm
+      namespace: xeon-llm
+      project: xeon-llm
       path: charts/all/reranking
       ignoreDifferences:
       - group: apps
@@ -185,14 +138,14 @@ clusterGroup:
         - '.spec.paused'
     redis-vector-db:
       name: redis-vector-db
-      namespace: gaudi-llm
-      project: gaudi-llm
+      namespace: xeon-llm
+      project: xeon-llm
       path: charts/all/redis-vector-db
-    llm-server-for-gaudi:
-      name: llm-server-for-gaudi
-      namespace: gaudi-llm
-      project: gaudi-llm
-      path: charts/all/llm-server-for-gaudi
+    llm-server-for-xeon:
+      name: llm-server-for-xeon
+      namespace: xeon-llm
+      project: xeon-llm
+      path: charts/all/llm-server-for-xeon
       ignoreDifferences:
       - group: apps
         kind: Deployment
@@ -202,11 +155,11 @@ clusterGroup:
         kind: BuildConfig
         jqPathExpressions:
         - '.spec.paused'
-    gaudillm-init:
-      name: gaudillm-init
-      namespace: gaudi-llm
-      project: gaudi-llm
-      path: charts/all/gaudillm-init
+    xeonllm-init:
+      name: xeonllm-init
+      namespace: xeon-llm
+      project: xeon-llm
+      path: charts/all/xeonllm-init
       ignoreDifferences:
       - group: machineconfiguration.openshift.io
         kind: KubeletConfig
@@ -216,8 +169,8 @@ clusterGroup:
           - /metadata/annotations/kubectl.kubernetes.io~1last-applied-configuration
     embedding:
       name: embedding
-      namespace: gaudi-llm
-      project: gaudi-llm
+      namespace: xeon-llm
+      project: xeon-llm
       path: charts/all/embedding
       ignoreDifferences:
       - group: apps
@@ -230,8 +183,8 @@ clusterGroup:
         - '.spec.paused'
     dataprep:
       name: dataprep
-      namespace: gaudi-llm
-      project: gaudi-llm
+      namespace: xeon-llm
+      project: xeon-llm
       path: charts/all/dataprep
       ignoreDifferences:
       - group: apps
@@ -244,8 +197,8 @@ clusterGroup:
         - '.spec.paused'
     chatqna-ui-server:
       name: chatqna-ui-server
-      namespace: gaudi-llm
-      project: gaudi-llm
+      namespace: xeon-llm
+      project: xeon-llm
       path: charts/all/chatqna-ui-server
       ignoreDifferences:
       - group: apps
@@ -257,11 +210,11 @@ clusterGroup:
         kind: BuildConfig
         jqPathExpressions:
         - '.spec.paused'
-    chatqna-gaudi-backend:
-      name: chatqna-gaudi-backend
-      namespace: gaudi-llm
-      project: gaudi-llm
-      path: charts/all/chatqna-gaudi-backend
+    chatqna-xeon-backend:
+      name: chatqna-xeon-backend
+      namespace: xeon-llm
+      project: xeon-llm
+      path: charts/all/chatqna-xeon-backend
       ignoreDifferences:
       - group: apps
         kind: Deployment

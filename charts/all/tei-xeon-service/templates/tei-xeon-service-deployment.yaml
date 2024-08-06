@@ -7,7 +7,7 @@ metadata:
   labels:
     io.kompose.service: tei-xeon-service
   name: tei-xeon-service
-  namespace: {{ .Values.global.gaudillm.namespace }}
+  namespace: {{ .Values.global.xeonllm.namespace }}
 spec:
   replicas: 1
   selector:
@@ -27,7 +27,7 @@ spec:
       containers:
         - args:
             - --model-id
-            - {{ .Values.global.gaudillm.tei_xeon.model_id }}
+            - {{ .Values.global.xeonllm.tei_xeon.model_id }}
             - --port
             - '8080'
           env:
@@ -38,13 +38,13 @@ spec:
                   name: hf-token-secret
             - name: HOME
               value: /data
-            {{- if .Values.global.gaudillm.runtime_envs }}
-            {{- range .Values.global.gaudillm.runtime_envs }}
+            {{- if .Values.global.xeonllm.runtime_envs }}
+            {{- range .Values.global.xeonllm.runtime_envs }}
             - name: {{ .name }}
               value: {{ .value }}
             {{- end }}
             {{- end }}
-          image: {{ .Values.global.gaudillm.tei_xeon.image }}
+          image: {{ .Values.global.xeonllm.tei_xeon.image }}
           name: tei-xeon-server
           ports:
             - containerPort: 8080

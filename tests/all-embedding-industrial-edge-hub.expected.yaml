@@ -11,7 +11,7 @@ metadata:
   labels:
     io.kompose.service: embedding
   name: embedding
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
   ports:
     - name: "6000"
@@ -33,7 +33,7 @@ metadata:
   labels:
     io.kompose.service: embedding
   name: embedding
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
   replicas: 1
   selector:
@@ -55,7 +55,7 @@ spec:
             - name: PYTHONPATH
               value: /home/user/.local/lib/python3.11/site-packages:/home/user
             - name: TEI_EMBEDDING_ENDPOINT
-              value: http://tei-embedding-service.gaudi-llm.svc.cluster.local:8090
+              value: http://tei-embedding-service.xeon-llm.svc.cluster.local:8090
           image: embedding-tei:latest
           name: embedding-tei-server
           ports:
@@ -74,7 +74,7 @@ kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
   name: embedding
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
   output:
     to:
@@ -103,7 +103,7 @@ apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
   name: embedding-tei
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
   lookupPolicy:
     local: true
@@ -113,9 +113,9 @@ apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: embedding-megaservice-route
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
-  host: megaservice-gaudi-llm.apps.region.example.com
+  host: megaservice-xeon-llm.apps.region.example.com
   path: /v1/embeddings
   port:
     targetPort: 6000

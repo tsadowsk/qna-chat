@@ -6,7 +6,7 @@ metadata:
   labels:
     io.kompose.service: tei-embedding-service-claim0
   name: tei-embedding-service-claim0
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
   accessModes:
     - ReadWriteOnce
@@ -24,7 +24,7 @@ metadata:
   labels:
     io.kompose.service: tei-embedding-service
   name: tei-embedding-service
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
   ports:
     - name: "8090"
@@ -41,11 +41,11 @@ metadata:
     kompose.cmd: kompose convert -f docker_compose.yaml
     kompose.version: 1.33.0 (3ce457399)
     argocd.argoproj.io/sync-wave: "5"
-    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"tei-gaudi:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"tei-embedding-gaudi-server\")].image"}]'
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"tei-xeon:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"tei-embedding-xeon-server\")].image"}]'
   labels:
     io.kompose.service: tei-embedding-service
   name: tei-embedding-service
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
   replicas: 1
   selector:
@@ -80,16 +80,16 @@ spec:
             #  value: habana
             - name: HOME
               value: /tmp/temp-data
-          image: tei-gaudi:latest
-          name: tei-embedding-gaudi-server
+          image: tei-xeon:latest
+          name: tei-embedding-xeon-server
           ports:
             - containerPort: 80
               protocol: TCP
           resources:
             limits:
-              habana.ai/gaudi: "1"
+              habana.ai/xeon: "1"
             requests:
-              habana.ai/gaudi: "1"
+              habana.ai/xeon: "1"
           volumeMounts:
             - mountPath: /data
               name: tei-embedding-service-claim0
@@ -113,13 +113,13 @@ spec:
 kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
-  name: tei-gaudi
-  namespace: gaudi-llm
+  name: tei-xeon
+  namespace: xeon-llm
 spec:
   output:
     to:
       kind: "ImageStreamTag"
-      name: "tei-gaudi:latest"
+      name: "tei-xeon:latest"
   failedBuildsHistoryLimit: 5
   successfulBuildsHistoryLimit: 5
   nodeSelector: null
@@ -129,7 +129,7 @@ spec:
   source:
     git:
       ref: a7ee6f1fe13ce8aed440d0baa0953cd8f5c23e0a
-      uri: https://github.com/huggingface/tei-gaudi.git
+      uri: https://github.com/huggingface/tei-xeon.git
     type: Git
   strategy:
     type: Docker
@@ -142,8 +142,8 @@ spec:
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
-  name: tei-gaudi
-  namespace: gaudi-llm
+  name: tei-xeon
+  namespace: xeon-llm
 spec:
   lookupPolicy:
     local: true

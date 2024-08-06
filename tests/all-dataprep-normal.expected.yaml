@@ -11,7 +11,7 @@ metadata:
   labels:
     io.kompose.service: dataprep-redis
   name: dataprep
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
   ports:
     - name: "6007"
@@ -33,7 +33,7 @@ metadata:
   labels:
     io.kompose.service: dataprep-redis
   name: dataprep
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
   replicas: 1
   selector:
@@ -55,7 +55,7 @@ spec:
             - name: PYTHONPATH
               value: /home/user/.local/lib/python3.11/site-packages:/home/user
             - name: REDIS_URL
-              value: redis://redis-vector-db.gaudi-llm.svc.cluster.local:6379
+              value: redis://redis-vector-db.xeon-llm.svc.cluster.local:6379
             - name: INDEX_NAME
               value: rag-redis
           image: dataprep-redis:latest
@@ -80,7 +80,7 @@ kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
   name: dataprep
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
   output:
     to:
@@ -109,7 +109,7 @@ apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
   name: dataprep-redis
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
   lookupPolicy:
     local: true
@@ -121,9 +121,9 @@ metadata:
   annotations:
     haproxy.router.openshift.io/timeout: 86400s # long timeout for dataprep processing
   name: dataprep-megaservice-route
-  namespace: gaudi-llm
+  namespace: xeon-llm
 spec:
-  host: megaservice-gaudi-llm.apps.region.example.com
+  host: megaservice-xeon-llm.apps.region.example.com
   path: /v1/dataprep
   port:
     targetPort: 6007
