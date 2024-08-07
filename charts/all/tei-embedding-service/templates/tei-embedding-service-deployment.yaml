@@ -55,11 +55,6 @@ spec:
           ports:
             - containerPort: 80
               protocol: TCP
-          resources:
-            limits:
-              habana.ai/xeon: "1"
-            requests:
-              habana.ai/xeon: "1"
           volumeMounts:
             - mountPath: /data
               name: tei-embedding-service-claim0

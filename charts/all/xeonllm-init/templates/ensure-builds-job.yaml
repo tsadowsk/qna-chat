@@ -15,8 +15,6 @@ spec:
         - /bin/bash
         - -c
         - |
-          oc wait --for condition=Complete -n habana-ai-operator job confirm-habana-is-enabled --timeout=-1s
-          oc wait --for condition=Complete -n habana-ai-operator job job-wait-for-mcp-update --timeout=-1s
           oc wait --for condition=Complete -n {{ .Values.global.xeonllm.namespace }} job init-kubeletconfig-apply-job --timeout=-1s
           '/tmp/ensure-builds.sh'
         name: ensure-builds
