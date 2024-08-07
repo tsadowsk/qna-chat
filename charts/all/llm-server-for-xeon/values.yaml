@@ -13,4 +13,5 @@ global:
     
     llm_server_for_xeon:  
       image: image-registry.openshift-image-registry.svc:5000/xeon-llm/llm-tgi:latest
-      git_ref: 8ebe2bf # make sure to validate buildconfig & other change scope before updating
+      git_ref: main # make sure to validate buildconfig & other change scope before updating
+      #git_ref: 8ebe2bf # make sure to validate buildconfig & other change scope before updating
