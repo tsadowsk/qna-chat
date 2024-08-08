@@ -12,7 +12,7 @@ global:
     runtime_envs: []
 
     tei_embedding:
-      image: tei-xeon:latest
+      image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.5
       model_id: BAAI/bge-large-en-v1.5 # change to set custom TEI embedding model
 #   uncomment to customize PVC size if using TEI models bigger thanBAAI/bge-large-en-v1.5
 #      pvc:i
