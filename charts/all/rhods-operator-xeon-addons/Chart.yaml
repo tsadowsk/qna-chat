@@ -1,0 +1,6 @@
+oapiVersion: v2
+description: A Helm chart for RHODS (Red Hat OpenShift Data Science) deployment of Xeon-related addons
+keywords:
+- rhods-operator-xeon-addons
+name: rhods-operator-xeon-addons
+version: 0.0.1

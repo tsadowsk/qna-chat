@@ -1,0 +1,96 @@
+---
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  annotations:
+    opendatahub.io/apiProtocol: REST
+    opendatahub.io/modelServingSupport: '["single"]'
+  labels:
+    opendatahub.io/dashboard: "true"
+  name: tgi-2-2-0-nc7b-v3-3-7b-cpu
+  namespace: redhat-ods-applications
+objects:
+- apiVersion: serving.kserve.io/v1alpha1
+  kind: ServingRuntime
+  labels:
+    opendatahub.io/dashboard: "true"
+  metadata:
+    annotations:
+      openshift.io/display-name: Text Generation Inference 2.2.0 Intel/neural-chat-7b-v3-3 on CPU
+    name: tgi-2-2-0-nc7b-v3-3-7b-cpu
+  spec:
+    containers:
+      - args:
+          - --model-id
+          - /mnt/models/--Intel--neural-chat-7b-v3-3/snapshots/b1ad165a761a4c300818911a5a0284140fc7b8d8
+          - --port=8080
+          - --json-output
+          - --cuda-graphs=0
+        env:
+          - name: HF_HOME
+            value: /tmp/hf_home
+          - name: HF_OFFLINE
+            value: "1"
+          - name: TRANSFORMERS_OFFLINE
+            value: "1"
+          - name: HF_HUB_CACHE
+            value: /mnt/models
+          - name: NUMBA_CACHE_DIR
+            value: /tmp/hf_home
+          - name: HUGGING_FACE_HUB_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: hf-token-secret
+                key: huggingface
+          - name: BATCH_BUCKET_SIZE
+            value: "22"
+          - name: PREFILL_BATCH_BUCKET_SIZE
+            value: "1"
+          - name: MAX_BATCH_PREFILL_TOKENS
+            value: "5102"
+          - name: MAX_BATCH_TOTAL_TOKENS
+            value: "32256"
+          - name: MAX_INPUT_LENGTH
+            value: "1024"
+          - name: PAD_SEQUENCE_TO_MULTIPLE_OF
+            value: "1024"
+          - name: MAX_WAITING_TOKENS
+            value: "5"
+        image: ghcr.io/huggingface/text-generation-inference:2.2.0
+        livenessProbe:
+          exec:
+            command:
+              - curl
+              - localhost:8080/health
+          initialDelaySeconds: 900
+        name: kserve-container
+        ports:
+          - containerPort: 8080
+            protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+              - curl
+              - localhost:8080/health
+          initialDelaySeconds: 500
+        volumeMounts:
+          - mountPath: /var/log/xeon_logs
+            name: logs-volume
+          - mountPath: /data
+            name: model-volume
+    volumes:
+      - name: logs-volume
+        emptyDir:
+          sizeLimit: 500Mi
+      - name: model-volume
+        emptyDir:
+          sizeLimit: 300Gi
+      - name: shm
+        emptyDir:
+          medium: Memory
+          sizeLimit: 40Gi
+    multiModel: false
+    supportedModelFormats:
+      - autoSelect: true
+        name: llm
+
