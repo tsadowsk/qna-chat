@@ -42,12 +42,12 @@ data:
         image: opea/tei-xeon:latest
         volumes:
           - "./data:/data"
-        runtime: habana
+        runtime: tgi-2-2-0-nc7b-v3-3-7b-cpu
         cap_add:
           - SYS_NICE
         ipc: host
         environment:
-          HABANA_VISIBLE_DEVICES: all
+          #HABANA_VISIBLE_DEVICES: all
           OMPI_MCA_btl_vader_single_copy_mechanism: none
         model-id: ${EMBEDDING_MODEL_ID}
       embedding:
@@ -71,13 +71,13 @@ data:
         image: ghcr.io/huggingface/tgi-xeon:1.2.1
         volumes:
           - "./data:/data"
-        runtime: habana
+        runtime: tgi-2-2-0-nc7b-v3-3-7b-cpu
         cap_add:
           - SYS_NICE
         ipc: host
         environment:
           HUGGINGFACEHUB_API_TOKEN: ${HUGGINGFACEHUB_API_TOKEN}
-          HABANA_VISIBLE_DEVICES: all
+          #HABANA_VISIBLE_DEVICES: all
           OMPI_MCA_btl_vader_single_copy_mechanism: none
         model-id: ${LLM_MODEL_ID}
       llm:
