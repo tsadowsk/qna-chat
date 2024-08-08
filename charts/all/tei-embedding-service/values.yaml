@@ -8,7 +8,6 @@ global:
 
     tei_embedding:
       git_ref: a7ee6f1fe13ce8aed440d0baa0953cd8f5c23e0a
-      #image: image-registry.openshift-image-registry.svc:5000/xeon-llm/tei-xeon:latest
       image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.5
       pvc:
         size: 3Gi
